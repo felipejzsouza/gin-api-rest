@@ -2,7 +2,10 @@ package routes
 
 import (
 	"github.com/felipejzsouza/gin-api-rest/controllers"
+	_ "github.com/felipejzsouza/gin-api-rest/docs"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func HandleRquests() {
@@ -17,6 +20,7 @@ func HandleRquests() {
 	r.PATCH("/aluno/:id", controllers.EditarAluno)
 	r.GET("/aluno/cpf/:cpf", controllers.BuscarAlunoPorCPF)
 	r.GET("/index", controllers.ExibirPagina)
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.NoRoute(controllers.RetornarNaoEncontrada)
 	r.Run()
 }

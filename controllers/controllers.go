@@ -8,6 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Sauda o chamador com o nome informado
+// @ID SaudarAluno
+// @Param nome path string true "Nome"
+// @Produce json
+// @Success 200 {object} string
+// @Router /saudacao/{nome} [get]
 func SaudarAluno(c *gin.Context) {
 	nome := c.Param("nome")
 	c.JSON(http.StatusOK, gin.H{
@@ -15,12 +21,23 @@ func SaudarAluno(c *gin.Context) {
 	})
 }
 
+// @Summary Retorna todos os alunos
+// @ID BuscarAlunos
+// @Produce json
+// @Success 200 {object} []models.Aluno
+// @Router /alunos [get]
 func BuscarAlunos(c *gin.Context) {
 	var alunos []models.Aluno
 	database.DB.Find(&alunos)
 	c.JSON(http.StatusOK, alunos)
 }
 
+// @Summary Retorna uma aluno por ID
+// @ID BuscarAluno
+// @Param id path int true "ID"
+// @Produce json
+// @Success 200 {object} models.Aluno
+// @Router /aluno/{id} [get]
 func BuscarAluno(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var aluno models.Aluno
@@ -33,6 +50,12 @@ func BuscarAluno(c *gin.Context) {
 	c.JSON(http.StatusOK, aluno)
 }
 
+// @Summary Cadastra um aluno
+// @ID CadastrarAluno
+// @Param Aluno body models.Aluno true "Aluno"
+// @Produce json
+// @Success 200 {object} models.Aluno
+// @Router /aluno [post]
 func CadastrarAluno(c *gin.Context) {
 	var aluno models.Aluno
 	if err := c.ShouldBindJSON(&aluno); err != nil {
@@ -51,6 +74,13 @@ func CadastrarAluno(c *gin.Context) {
 	c.JSON(http.StatusOK, aluno)
 }
 
+// @Summary Deleta o aluno indicado
+// @ID DeletarAluno
+// @Produce json
+// @Param id path string true "ID"
+// @Success 200 {object} models.Aluno
+// @Failure 404 {object} string
+// @Router /aluno/{id} [delete]
 func DeletarAluno(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var aluno models.Aluno
@@ -58,6 +88,13 @@ func DeletarAluno(c *gin.Context) {
 	c.JSON(http.StatusOK, aluno)
 }
 
+// @Summary Edita um aluno
+// @ID EditarAluno
+// @Param id path string true "ID"
+// @Param Aluno body models.Aluno true "Aluno"
+// @Produce json
+// @Success 200 {object} models.Aluno
+// @Router /aluno/{id} [patch]
 func EditarAluno(c *gin.Context) {
 	id := c.Param("id")
 	var aluno models.Aluno

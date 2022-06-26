@@ -19,7 +19,7 @@ import (
 var ID int
 
 func ConfigurarRotasTeste() *gin.Engine {
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	rotas := gin.Default()
 	return rotas
 }

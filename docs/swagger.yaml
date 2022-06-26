@@ -1,0 +1,148 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Aluno:
+    properties:
+      cpf:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      nome:
+        type: string
+      rg:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Exemplo de APIs REST para a aprendizado.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Go + Gin API
+  version: "1.0"
+paths:
+  /aluno:
+    post:
+      operationId: CadastrarAluno
+      parameters:
+      - description: Aluno
+        in: body
+        name: Aluno
+        required: true
+        schema:
+          $ref: '#/definitions/models.Aluno'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+      summary: Cadastra um aluno
+  /aluno/{id}:
+    delete:
+      operationId: DeletarAluno
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Deleta o aluno indicado
+    get:
+      operationId: BuscarAluno
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+      summary: Retorna uma aluno por ID
+    patch:
+      operationId: EditarAluno
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Aluno
+        in: body
+        name: Aluno
+        required: true
+        schema:
+          $ref: '#/definitions/models.Aluno'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+      summary: Edita um aluno
+  /alunos:
+    get:
+      operationId: BuscarAlunos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Aluno'
+            type: array
+      summary: Retorna todos os alunos
+  /saudacao/{nome}:
+    get:
+      operationId: SaudarAluno
+      parameters:
+      - description: Nome
+        in: path
+        name: nome
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Sauda o chamador com o nome informado
+swagger: "2.0"
