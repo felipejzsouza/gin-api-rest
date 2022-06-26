@@ -8,6 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func SaudarAluno(c *gin.Context) {
+	nome := c.Param("nome")
+	c.JSON(http.StatusOK, gin.H{
+		"API diz": "Eai " + nome + ", tudo beleza?",
+	})
+}
+
 func BuscarAlunos(c *gin.Context) {
 	var alunos []models.Aluno
 	database.DB.Find(&alunos)
@@ -33,6 +40,13 @@ func CadastrarAluno(c *gin.Context) {
 			"error": err.Error(),
 		})
 	}
+	if err := models.Validar(&aluno); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	database.DB.Create(&aluno)
 	c.JSON(http.StatusOK, aluno)
 }
@@ -56,6 +70,12 @@ func EditarAluno(c *gin.Context) {
 		})
 		return
 	}
+	if err := models.Validar(&aluno); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 	database.DB.Model(&aluno).UpdateColumns(aluno)
 	c.JSON(http.StatusOK, aluno)
 }
@@ -69,4 +89,16 @@ func BuscarAlunoPorCPF(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, aluno)
+}
+
+func ExibirPagina(c *gin.Context) {
+	var alunos []models.Aluno
+	database.DB.Find(&alunos)
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"alunos": alunos,
+	})
+}
+
+func RetornarNaoEncontrada(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
 }
